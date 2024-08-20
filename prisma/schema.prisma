@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["omitApi"]
 }
 
@@ -15,30 +15,30 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  username  String?
-  email String  @unique
-  telephone String?
+  id             Int     @id @default(autoincrement())
+  username       String?
+  email          String  @unique
+  telephone      String?
   firebase_token String
-  Group Group[]
+  Group          Group[]
 }
 
 model Venue {
-  id        Int     @id @default(autoincrement())
-  name String
-  phone String
-  mail String?
-  logo String?
-  adress String
-  type String
-  availability String[]
+  id              Int      @id @default(autoincrement())
+  name            String
+  phone           String
+  mail            String?
+  logo            String?
+  adress          String
+  type            String
+  availability    String[]
   booking_options String[]
-} 
+}
 
 model Group {
-  id    Int     @id @default(autoincrement())
-  name  String
-  members User[]
-  type String
+  id          Int    @id @default(autoincrement())
+  name        String
+  members     User[]
+  type        String
   invite_link String
 }

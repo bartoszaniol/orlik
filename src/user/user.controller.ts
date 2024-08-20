@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 
@@ -12,12 +20,15 @@ export class UserController {
   }
 
   @Get('/find/:name')
-  findUserByName(@Param('name') name: string){
-    return this.userService.findUserByName(name)
+  findUserByName(@Param('name') name: string) {
+    return this.userService.findUserByName(name);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: Prisma.UserUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: Prisma.UserUpdateInput,
+  ) {
     return this.userService.update(+id, updateUserDto);
   }
 

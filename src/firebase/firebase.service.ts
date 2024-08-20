@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class FirebaseService {
   constructor() {
-    if (admin.apps.length != 0) return
+    if (admin.apps.length != 0) return;
     admin.initializeApp({
       credential: admin.credential.cert('src/firebase-admin.json'),
     });

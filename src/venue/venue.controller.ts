@@ -1,7 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { VenueService } from './venue.service';
 import { Prisma } from '@prisma/client';
-
 
 @Controller('venue')
 export class VenueController {
@@ -12,14 +19,16 @@ export class VenueController {
     return this.venueService.create(createVenueDto);
   }
 
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.venueService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVenueDto: Prisma.VenueUpdateInput) {
+  update(
+    @Param('id') id: string,
+    @Body() updateVenueDto: Prisma.VenueUpdateInput,
+  ) {
     return this.venueService.update(+id, updateVenueDto);
   }
 

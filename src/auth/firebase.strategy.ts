@@ -4,7 +4,10 @@ import { Strategy } from 'passport-custom';
 import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
-export class FirebaseAuthStrategy extends PassportStrategy(Strategy,'firebase-auth') {
+export class FirebaseAuthStrategy extends PassportStrategy(
+  Strategy,
+  'firebase-auth',
+) {
   constructor(private readonly firebaseService: FirebaseService) {
     super();
   }

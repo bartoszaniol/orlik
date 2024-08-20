@@ -10,8 +10,7 @@ export class AppController {
   }
 
   @Get()
-  getAll(){
-    return "HELLO WORLD"
+  getAll() {
+    return 'HELLO WORLD';
   }
 }
-
