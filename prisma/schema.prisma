@@ -20,7 +20,7 @@ model User {
   email          String  @unique
   telephone      String?
   firebase_token String
-  Group          Group[]
+  groups         Group[] @relation("UserGroups")
 }
 
 model Venue {
@@ -38,7 +38,7 @@ model Venue {
 model Group {
   id          Int    @id @default(autoincrement())
   name        String
-  members     User[]
+  members     User[] @relation("UserGroups")
   type        String
   invite_link String
 }

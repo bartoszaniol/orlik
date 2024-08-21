@@ -5,10 +5,12 @@ import { FirebaseService } from './firebase/firebase.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { VenueModule } from './venue/venue.module';
+import { GroupService } from './group/group.service';
+import { GroupModule } from './group/group.module';
 
 @Module({
-  imports: [AuthModule, UserModule, VenueModule],
+  imports: [AuthModule, UserModule, VenueModule, GroupModule],
   controllers: [AppController],
-  providers: [AppService, FirebaseService],
+  providers: [AppService, FirebaseService, GroupService],
 })
 export class AppModule {}
