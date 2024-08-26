@@ -6,6 +6,10 @@ import { DatabaseService } from 'src/database/database.service';
 export class UserService {
   constructor(private readonly userService: DatabaseService) {}
 
+  async createUser(createUserDto: Prisma.UserCreateInput) {
+    return await this.userService.user.create({ data: createUserDto });
+  }
+
   async getUserData(id: number) {
     return await this.userService.user.findUnique({
       omit: { firebase_token: true },

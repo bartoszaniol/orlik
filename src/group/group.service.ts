@@ -14,10 +14,17 @@ export class GroupService {
     return await this.groupService.group.delete({ where: { id } });
   }
 
-  async addUserToGroup(groupId: number, userId: number) {
+  async addUserToGroup(groupId: number, groupDTO: { userId: number }) {
     return await this.groupService.group.update({
       where: { id: groupId },
-      data: { members: { connect: { id: userId } } },
+      data: { members: { connect: { id: groupDTO.userId } } },
+    });
+  }
+
+  async getGroupById(id: number) {
+    return await this.groupService.group.findFirst({
+      where: { id },
+      include: { members: true },
     });
   }
 }

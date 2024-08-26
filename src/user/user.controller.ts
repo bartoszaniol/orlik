@@ -14,6 +14,11 @@ import { Prisma } from '@prisma/client';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post()
+  createUser(@Body() createUserDto: Prisma.UserCreateInput) {
+    return this.userService.createUser(createUserDto);
+  }
+
   @Get(':id')
   getUserData(@Param('id') id: string) {
     return this.userService.getUserData(+id);
