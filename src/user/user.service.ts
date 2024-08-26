@@ -14,6 +14,7 @@ export class UserService {
     return await this.userService.user.findUnique({
       omit: { firebase_token: true },
       where: { id },
+      include: { Group: true },
     });
   }
 
