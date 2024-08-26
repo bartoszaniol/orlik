@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-custom';
 import { FirebaseService } from '../firebase/firebase.service';
@@ -16,7 +16,7 @@ export class FirebaseAuthStrategy extends PassportStrategy(
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      throw new Error('No token provided');
+      throw new UnauthorizedException('No token provided');
     }
 
     const decodedToken = await this.firebaseService.verifyToken(token);
