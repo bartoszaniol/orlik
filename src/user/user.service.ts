@@ -14,7 +14,14 @@ export class UserService {
     return await this.userService.user.findUnique({
       omit: { firebase_token: true },
       where: { id },
-      include: { Group: true },
+      include: { groups: true },
+    });
+  }
+
+  async getUserGroups(id: number) {
+    return await this.userService.user.findUnique({
+      where: { id },
+      select: { groups: true },
     });
   }
 

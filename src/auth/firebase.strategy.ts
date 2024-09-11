@@ -18,10 +18,13 @@ export class FirebaseAuthStrategy extends PassportStrategy(
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
-
     const decodedToken = await this.firebaseService.verifyToken(token);
 
     // Zwraca dane użytkownika, które można użyć w dalszych częściach aplikacji
-    return { uid: decodedToken.uid, email: decodedToken.email };
+    return {
+      uid: decodedToken.uid,
+      email: decodedToken.email,
+      koko: decodedToken.email_verified,
+    };
   }
 }

@@ -41,4 +41,9 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+  @Get('/groups/:id')
+  getUserGroups(@Param('id') id: string) {
+    return this.userService.getUserGroups(+id);
+  }
 }

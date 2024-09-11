@@ -10,6 +10,13 @@ export class GroupService {
     return await this.groupService.group.create({ data: createGroupDto });
   }
 
+  async update(updateGroupDto: Prisma.GroupUpdateInput, groupId: number) {
+    return await this.groupService.group.update({
+      where: { id: groupId },
+      data: updateGroupDto,
+    });
+  }
+
   async remove(id: number) {
     return await this.groupService.group.delete({ where: { id } });
   }
