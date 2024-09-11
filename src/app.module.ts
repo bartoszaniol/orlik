@@ -8,10 +8,9 @@ import { VenueModule } from './venue/venue.module';
 import { GroupService } from './group/group.service';
 import { GroupModule } from './group/group.module';
 import { DatabaseModule } from './database/database.module';
-import { InviteModule } from './invite/invite.module';
 
 @Module({
-  imports: [AuthModule, UserModule, VenueModule, GroupModule, DatabaseModule, InviteModule],
+  imports: [AuthModule, UserModule, VenueModule, GroupModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService, FirebaseService, GroupService],
 })

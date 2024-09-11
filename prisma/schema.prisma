@@ -36,11 +36,11 @@ model Venue {
 }
 
 model Group {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
-  members     User[] @relation("UserGroups")
-  type        Type   @default(GROUP)
-  invite_link String
+  members     User[]  @relation("UserGroups")
+  type        Type    @default(GROUP)
+  invite_link String?
 }
 
 enum Type {

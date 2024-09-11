@@ -10,14 +10,14 @@ export class GroupService {
     return await this.groupService.group.create({ data: createGroupDto });
   }
 
-  async addByInvite(inviteUrl: string, userId: number) {
+  async addByInvite(inviteUrl: string, userDto: { userId: number }) {
     const validUrl = await this.groupService.group.findFirst({
       where: { invite_link: inviteUrl },
     });
     if (!validUrl || Object.keys(validUrl).length == 0) {
       throw new NotFoundException('Invalid invite URL');
     } else {
-      await this.addUserToGroup(validUrl.id, userId);
+      await this.addUserToGroup(validUrl.id, userDto);
       return validUrl;
     }
   }
@@ -33,10 +33,10 @@ export class GroupService {
     return await this.groupService.group.delete({ where: { id } });
   }
 
-  async addUserToGroup(groupId: number, userId: number) {
+  async addUserToGroup(groupId: number, userDto: { userId: number }) {
     return await this.groupService.group.update({
       where: { id: groupId },
-      data: { members: { connect: { id: userId } } },
+      data: { members: { connect: { id: userDto.userId } } },
     });
   }
 
