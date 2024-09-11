@@ -36,4 +36,6 @@ export class VenueController {
   remove(@Param('id') id: string) {
     return this.venueService.remove(+id);
   }
+
+  // Get Typy (boisko, hala, siłka, etc)
 }

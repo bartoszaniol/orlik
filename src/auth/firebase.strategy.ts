@@ -20,11 +20,11 @@ export class FirebaseAuthStrategy extends PassportStrategy(
     }
     const decodedToken = await this.firebaseService.verifyToken(token);
 
-    // Zwraca dane użytkownika, które można użyć w dalszych częściach aplikacji
+    // Zwracane dane użytkownika z firebase'a
     return {
       uid: decodedToken.uid,
       email: decodedToken.email,
-      koko: decodedToken.email_verified,
+      emailVerified: decodedToken.email_verified,
     };
   }
 }
