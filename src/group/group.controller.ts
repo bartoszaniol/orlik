@@ -21,6 +21,7 @@ export class GroupController {
 
   @Post()
   createGroup(@Body() createGroupDto: Prisma.GroupCreateInput) {
+    createGroupDto.invite_link = '123';
     return this.groupService.create(createGroupDto);
   }
 
@@ -38,10 +39,12 @@ export class GroupController {
   }
 
   @Patch('user/:id')
-  addUserToGroup(
-    @Param('id') groupId: string,
-    @Body() addUserToGroupDTO: { userId: number },
-  ) {
-    return this.groupService.addUserToGroup(+groupId, addUserToGroupDTO);
+  addUserToGroup(@Param('id') groupId: string, @Body() userId: number) {
+    return this.groupService.addUserToGroup(+groupId, userId);
+  }
+
+  @Post('invite/:url')
+  addByInvite(@Param('url') inviteUrl: string, @Body() userId: number) {
+    return this.groupService.addByInvite(inviteUrl, userId);
   }
 }
