@@ -7,6 +7,32 @@ export class GroupService {
   constructor(private readonly groupService: DatabaseService) {}
 
   async create(createGroupDto: Prisma.GroupCreateInput) {
+    const createUniqueUrl = () => {
+      const length = 22;
+      let result = '';
+      const characters =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      let counter = 0;
+      while (counter < length) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength),
+        );
+        counter += 1;
+      }
+      return result;
+    };
+    const uniqueUrl = createUniqueUrl();
+    let unique = false;
+    while (!unique) {
+      const isUnique = await this.groupService.group.findUnique({
+        where: { invite_link: uniqueUrl },
+      });
+      if (!isUnique) {
+        unique = true;
+      }
+    }
+    createGroupDto.invite_link = uniqueUrl;
     return await this.groupService.group.create({ data: createGroupDto });
   }
 
