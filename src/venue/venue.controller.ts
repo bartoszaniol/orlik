@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { VenueService } from './venue.service';
 import { Prisma } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Venues')
 @Controller('venue')
 export class VenueController {
   constructor(private readonly venueService: VenueService) {}

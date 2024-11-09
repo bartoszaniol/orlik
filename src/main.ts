@@ -9,7 +9,6 @@ async function bootstrap() {
     .setTitle('Orlik API')
     .setDescription('The Orlik API description')
     .setVersion('1.0')
-    .addTag('Orlik')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
