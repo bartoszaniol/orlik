@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  NotFoundException,
+  Injectable,
+  ConflictException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
@@ -7,22 +11,38 @@ export class UserService {
   constructor(private readonly userService: DatabaseService) {}
 
   async createUser(createUserDto: Prisma.UserCreateInput) {
-    return await this.userService.user.create({ data: createUserDto });
+    try {
+      const newUser = await this.userService.user.create({
+        data: createUserDto,
+      });
+      return newUser;
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('User with this email already exists');
+      }
+      throw new ConflictException('Could not create user');
+    }
   }
 
   async getUserData(id: number) {
-    return await this.userService.user.findUnique({
+    const user = await this.userService.user.findUnique({
       omit: { firebase_token: true },
       where: { id },
       include: { groups: true },
     });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async getUserGroups(id: number) {
-    return await this.userService.user.findUnique({
+    await this.getUserData(id);
+    const usersgroups = await this.userService.user.findUnique({
       where: { id },
       select: { groups: true },
     });
+    return usersgroups.groups;
   }
 
   async findUserByName(name: string) {
@@ -32,13 +52,33 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: Prisma.UserUpdateInput) {
-    return await this.userService.user.update({
-      where: { id },
-      data: updateUserDto,
-    });
+    try {
+      await this.getUserData(id);
+      const updateUser = await this.userService.user.update({
+        where: { id },
+        data: updateUserDto,
+      });
+      return updateUser;
+    } catch (error) {
+      if (error.response?.statusCode === 404) {
+        throw new NotFoundException('User not found');
+      } else {
+        throw new ConflictException('Could not update user');
+      }
+    }
   }
 
+  // TODO: GOWNO NIE DZIALA dla nie istniejacego usera
   async remove(id: number) {
-    return await this.userService.user.delete({ where: { id } });
+    try {
+      await this.getUserData(id);
+      await this.userService.user.delete({ where: { id } });
+    } catch (error) {
+      if (error.response?.statusCode === 404) {
+        throw new NotFoundException('User not found');
+      } else {
+        throw new ConflictException('Could not update user');
+      }
+    }
   }
 }

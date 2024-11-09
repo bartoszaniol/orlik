@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { GroupService } from './group.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Groups')
 @Controller('groups')
