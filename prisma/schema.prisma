@@ -24,15 +24,15 @@ model User {
 }
 
 model Venue {
-  id              Int      @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   name            String
   phone           String
   mail            String?
   logo            String?
-  adress          String
+  address         String
   type            String
-  availability    String[]
-  booking_options String[]
+  availability    String?
+  booking_options String?
 }
 
 model Group {

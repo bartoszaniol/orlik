@@ -11,34 +11,7 @@ import {
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
-
-const errorSchema = {
-  message: { type: 'string' },
-  error: { type: 'string' },
-  statusCode: { type: 'number' },
-};
-
-const userSchema = {
-  type: 'object',
-  properties: {
-    id: { type: 'number' },
-    username: { type: 'string' },
-    email: { type: 'string' },
-    telephone: { type: 'string' },
-    groups: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: { type: 'number' },
-          name: { type: 'string' },
-          type: { type: 'string' },
-          invite_link: { type: 'string' },
-        },
-      },
-    },
-  },
-};
+import { userSchema, errorSchema } from '../common/schemas';
 
 @ApiTags('Users')
 @Controller('user')
@@ -47,7 +20,7 @@ export class UserController {
 
   @Post()
   @HttpCode(201)
-  @ApiOperation({ summary: 'Create new user' })
+  @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -65,13 +38,9 @@ export class UserController {
     schema: userSchema,
   })
   @ApiResponse({
-    status: 409,
+    status: 400,
     description: 'Could not create user',
-    schema: {
-      type: 'object',
-
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
   createUser(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.userService.createUser(createUserDto);
@@ -79,7 +48,7 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(200)
-  @ApiOperation({ summary: 'Get user by id' })
+  @ApiOperation({ summary: 'Get user by an id' })
   @ApiResponse({
     status: 200,
     description: 'Returns user object',
@@ -88,10 +57,7 @@ export class UserController {
   @ApiResponse({
     status: 404,
     description: 'User not found',
-    schema: {
-      type: 'object',
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
   getUserData(@Param('id') id: string) {
     return this.userService.getUserData(+id);
@@ -111,14 +77,11 @@ export class UserController {
 
   @Patch(':id')
   @HttpCode(200)
-  @ApiOperation({ summary: 'Update user info' })
+  @ApiOperation({ summary: 'Update a user' })
   @ApiResponse({
-    status: 409,
+    status: 400,
     description: 'Could not update user',
-    schema: {
-      type: 'object',
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
   @ApiResponse({
     status: 200,
@@ -128,10 +91,7 @@ export class UserController {
   @ApiResponse({
     status: 404,
     description: 'Could not find user',
-    schema: {
-      type: 'object',
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
   @ApiBody({
     schema: {
@@ -156,24 +116,18 @@ export class UserController {
   @ApiResponse({
     status: 404,
     description: 'Could not find user',
-    schema: {
-      type: 'object',
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
   @ApiResponse({
     status: 204,
     description: 'User deleted',
   })
   @ApiResponse({
-    status: 409,
+    status: 400,
     description: 'Could not delete user',
-    schema: {
-      type: 'object',
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
-  @ApiOperation({ summary: 'Delete user' })
+  @ApiOperation({ summary: 'Delete a user' })
   remove(@Param('id') id: string) {
     this.userService.remove(+id);
   }
@@ -183,17 +137,14 @@ export class UserController {
   @ApiResponse({
     status: 404,
     description: 'Could not find user',
-    schema: {
-      type: 'object',
-      properties: errorSchema,
-    },
+    schema: errorSchema,
   })
   @ApiResponse({
     status: 200,
     description: 'Returns array of groups',
     schema: userSchema.properties.groups,
   })
-  @ApiOperation({ summary: "Find user's groups" })
+  @ApiOperation({ summary: "Find a user's groups" })
   getUserGroups(@Param('id') id: string) {
     return this.userService.getUserGroups(+id);
   }

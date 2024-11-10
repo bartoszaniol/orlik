@@ -2,8 +2,10 @@ import {
   NotFoundException,
   Injectable,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
@@ -52,33 +54,24 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: Prisma.UserUpdateInput) {
+    await this.getUserData(id);
     try {
-      await this.getUserData(id);
       const updateUser = await this.userService.user.update({
         where: { id },
         data: updateUserDto,
       });
       return updateUser;
     } catch (error) {
-      if (error.response?.statusCode === 404) {
-        throw new NotFoundException('User not found');
-      } else {
-        throw new ConflictException('Could not update user');
+      if (error instanceof PrismaClientValidationError) {
+        throw new BadRequestException('Invalid data');
       }
+      throw new ConflictException('Could not update user');
     }
   }
 
-  // TODO: GOWNO NIE DZIALA dla nie istniejacego usera
+  // TODO: GOWNO NIE DZIALA dla nieistniejacego usera
   async remove(id: number) {
-    try {
-      await this.getUserData(id);
-      await this.userService.user.delete({ where: { id } });
-    } catch (error) {
-      if (error.response?.statusCode === 404) {
-        throw new NotFoundException('User not found');
-      } else {
-        throw new ConflictException('Could not update user');
-      }
-    }
+    await this.getUserData(id);
+    await this.userService.user.delete({ where: { id } });
   }
 }
